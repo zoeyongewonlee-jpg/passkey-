@@ -1,0 +1,14 @@
+const res = await fetch("http://localhost:8000/api/passkey/register/options", {
+  method: "POST",
+  body: JSON.stringify({ username: "zoe" }),
+  headers: { "Content-Type": "application/json" }
+});
+const options = await res.json();
+
+const credential = await navigator.credentials.create({ publicKey: options });
+
+await fetch("http://localhost:8000/api/passkey/register/verify", {
+  method: "POST",
+  body: JSON.stringify({ username: "zoe", ...credential }),
+  headers: { "Content-Type": "application/json" }
+});
