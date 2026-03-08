@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Check Passkey Support</h2>
+<button id="check">Check Device</button>
+<p id="result"></p>
+
+<script>
+document.getElementById("check").onclick = () => {
+  const result = document.getElementById("result");
+
+  if (window.PublicKeyCredential) {
+    // Check if a platform authenticator (Passkey) is available
+    PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+      .then(supported => {
+        if (supported) {
+          result.textContent = "✅ Your device supports Passkeys!";
+        } else {
+          result.textContent = "⚠️ WebAuthn supported, but no device Passkey found.";
+        }
+      })
+      .catch(err => {
+        result.textContent = "❌ Error detecting Passkeys: " + err;
+      });
+  } else {
+    result.textContent = "❌ Passkeys / WebAuthn NOT supported in this browser.";
+  }
+};
+</script>
+</body>
+</html>
